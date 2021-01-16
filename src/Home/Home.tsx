@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import AudioRecord from 'react-native-audio-record';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { Button } from '../components';
 
-import { Button } from './src/components';
 const { ReverseAudioModule } = NativeModules;
 
-const App = () => {
+const Home = () => {
   const [audioFilePath, setAudioFilePath] = useState('')
   const audioRecorderPlayer = new AudioRecorderPlayer()
   
@@ -57,7 +57,7 @@ const App = () => {
       </SafeAreaView>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+export default Home;
