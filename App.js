@@ -4,11 +4,13 @@ import {
   StyleSheet,
   StatusBar,
   PermissionsAndroid,
+  NativeModules
 } from 'react-native';
 import AudioRecord from 'react-native-audio-record';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 import { Button } from './src/components';
+const { ReverseAudioModule } = NativeModules;
 
 const App = () => {
   const [audioFilePath, setAudioFilePath] = useState('')
@@ -24,14 +26,17 @@ const App = () => {
     });
 
     AudioRecord.start();
+    ReverseAudioModule.reverseAudioRecordingEvent('onStartRecording');
   }
 
   const onStopRecording = async () => {
     const audioFile = await AudioRecord.stop();
     setAudioFilePath(audioFile)
+    ReverseAudioModule.reverseAudioRecordingEvent('onStopRecording');
   }
 
   const onPlayRecording = async () => {
+    ReverseAudioModule.reverseAudioRecordingEvent('onPlayRecording');
     await audioRecorderPlayer.startPlayer(audioFilePath);
     audioRecorderPlayer.addPlayBackListener((audio) => {
       if (audio.current_position === audio.duration) {
