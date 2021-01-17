@@ -1,7 +1,13 @@
 import React from 'react'
 import { Text, TouchableOpacity } from 'react-native';
 
-const Button = ({ onPress, children, style }) => {
+interface ButtonProps {
+  children: string,
+  onPress: () => void,
+  style?: object
+}
+
+const Button = ({ onPress, children, style }: ButtonProps) => {
   return (
     <TouchableOpacity onPress={onPress} style={{ justifyContent: 'center', alignItems: 'center', width: 250, borderRadius: 10, padding: 25, backgroundColor: 'steelblue' }}>
       <Text style={{ color: 'white' }}>{children}</Text>
