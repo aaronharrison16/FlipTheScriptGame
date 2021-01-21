@@ -11,7 +11,6 @@ export interface StackNavigationProps<
 }
 
 export type AppRoutes = {
-  // Splash: undefined;
   Home: undefined;
   GameScreen: undefined;
 }

@@ -7,23 +7,26 @@ import {
   NativeModules
 } from 'react-native';
 import AudioRecord from 'react-native-audio-record';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { Button } from '../components';
 
 const { ReverseAudioModule } = NativeModules;
 
 const GameScreen = () => {
   const [audioFilePath, setAudioFilePath] = useState('')
-  const audioRecorderPlayer = new AudioRecorderPlayer()
   
   useEffect(() => {
     PermissionsAndroid.request('android.permission.RECORD_AUDIO')
   }, [])
 
-  const onStartRecording = async () => {
-    await AudioRecord.init({
-      audioSource: 6
-    });
+  const onStartRecording = () => {
+    const options = {
+      sampleRate: 44100,
+      channels: 1,
+      bitsPerSample: 16,
+      audioSource: 6,
+      wavFile: 'flipTheScript.wav'
+    }
+    AudioRecord.init(options);
 
     AudioRecord.start();
   }
@@ -34,15 +37,7 @@ const GameScreen = () => {
   }
 
   const onPlayRecording = async () => {
-    ReverseAudioModule.reverseAudioRecordingEvent('TODO REVERSE AUDIO');
-    await audioRecorderPlayer.startPlayer(audioFilePath);
-    audioRecorderPlayer.addPlayBackListener((audio) => {
-      if (audio.current_position === audio.duration) {
-        audioRecorderPlayer.stopPlayer()
-          .catch(() => {});
-      }
-      return
-    })
+    ReverseAudioModule.reverseAudioRecordingEvent(audioFilePath);
   }
 
   return (
