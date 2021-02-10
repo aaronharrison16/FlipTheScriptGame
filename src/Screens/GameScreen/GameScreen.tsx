@@ -4,14 +4,15 @@ import {
   StyleSheet,
   StatusBar,
   PermissionsAndroid,
-  NativeModules
+  NativeModules,
 } from 'react-native';
 import AudioRecord from 'react-native-audio-record';
-import { Button } from '../components';
+import { Button, RecordButton } from '../../Components';
+import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
 const { ReverseAudioModule } = NativeModules;
 
-const GameScreen = () => {
+const GameScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameScreen'>) => {
   const [audioFilePath, setAudioFilePath] = useState('')
   
   useEffect(() => {
@@ -44,8 +45,10 @@ const GameScreen = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
-        <Button onPress={onStartRecording}>Start Recording</Button>
-        <Button onPress={onStopRecording}>Stop Recording</Button>
+        <RecordButton
+          onPressIn={onStartRecording}
+          onPressOut={onStopRecording}
+        />
         <Button onPress={onPlayRecording}>Play Recording</Button>
       </SafeAreaView>
     </>

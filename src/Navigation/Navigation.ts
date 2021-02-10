@@ -11,6 +11,7 @@ export interface StackNavigationProps<
 }
 
 export type AppRoutes = {
-  Home: undefined;
+  HomeScreen: undefined;
   GameScreen: undefined;
+  SelectGameScreen: undefined;
 }
