@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AppRoutes } from './src/Navigation/Navigation';
 import HomeScreen from './src/Screens/HomeScreen';
 import GameScreen from './src/Screens/GameScreen';
-import SelectGameScreen from './src/Screens/SelectGameScreen';
+import GameSelectScreen from './src/Screens/GameSelectScreen';
 
 const AppStack = createStackNavigator<AppRoutes>();
 
@@ -16,7 +16,7 @@ const App = () => {
       <AppStack.Navigator headerMode='none'>
         <AppStack.Screen name='HomeScreen' component={HomeScreen} />
         <AppStack.Screen name='GameScreen' component={GameScreen} />
-        <AppStack.Screen name='SelectGameScreen' component={SelectGameScreen} />
+        <AppStack.Screen name='GameSelectScreen' component={GameSelectScreen} />
       </AppStack.Navigator>
     </NavigationContainer>
   );

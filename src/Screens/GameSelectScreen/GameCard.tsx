@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window')
 export const MARGIN = 10
 export const CARD_HEIGHT = 200
 
-const GameModeListItem = ({ name, onPress, index }: GameModeListItemProps) => {
+const GameCard = ({ name, onPress, index }: GameModeListItemProps) => {
   return (
     <View style={[styles.card]}>
       <Text>{name}</Text>
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export { GameModeListItem };
+export default GameCard;

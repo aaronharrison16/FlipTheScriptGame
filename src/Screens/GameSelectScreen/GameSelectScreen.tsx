@@ -4,7 +4,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, { add, Extrapolate, interpolate } from 'react-native-reanimated';
 import { usePanGestureHandler, withDecay, diffClamp } from  'react-native-redash/lib/module/v1';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
-import { GameModeListItem, CARD_HEIGHT, MARGIN } from './GameModeListItem';
+import { GameCard, CARD_HEIGHT, MARGIN } from '../GameSelectScreen';
 
 const DATA = [
   {
@@ -84,7 +84,7 @@ const DATA = [
 const { height } = Dimensions.get('window');
 const HEIGHT = CARD_HEIGHT + MARGIN * 2
 
-const SelectGameScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'SelectGameScreen'>) => {
+const GameSelectScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameSelectScreen'>) => {
   const { gestureHandler, translation, velocity, state } = usePanGestureHandler();
   const visibleCards = Math.floor(height / HEIGHT)
   const y = diffClamp(
@@ -126,8 +126,11 @@ const SelectGameScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'Selec
               outputRange: [0, 1, 1, 0.5],
             })
               return (
-                <Animated.View style={{ opacity, transform: [{ translateY }, { scale }] }}>
-                  <GameModeListItem
+                <Animated.View
+                  style={{ opacity, transform: [{ translateY }, { scale }] }}
+                  key={i}  
+                >
+                  <GameCard
                     name={gameMode.name}
                     onPress={() => {}}
                     index={i}
@@ -148,4 +151,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SelectGameScreen;
+export default GameSelectScreen;

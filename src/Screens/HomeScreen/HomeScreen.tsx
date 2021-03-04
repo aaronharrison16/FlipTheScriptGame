@@ -5,7 +5,7 @@ import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
 const HomeScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'HomeScreen'>) => {
   const onPlayPress = () => {
-    navigation.navigate('SelectGameScreen')
+    navigation.navigate('GameSelectScreen')
   }
 
   return (
