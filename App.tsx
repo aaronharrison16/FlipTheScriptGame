@@ -7,16 +7,22 @@ import { AppRoutes } from './src/Navigation/Navigation';
 import HomeScreen from './src/Screens/HomeScreen';
 import GameScreen from './src/Screens/GameScreen';
 import GameSelectScreen from './src/Screens/GameSelectScreen';
+import GameSettingsScreen from './src/Screens/GameSettingsScreen/GameSettingsScreen';
+import Themes from './src/Themes/Themes';
 
 const AppStack = createStackNavigator<AppRoutes>();
+const AppTheme = {
+  ...Themes.lightTheme
+}
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={AppTheme}>
       <AppStack.Navigator headerMode='none'>
         <AppStack.Screen name='HomeScreen' component={HomeScreen} />
         <AppStack.Screen name='GameScreen' component={GameScreen} />
         <AppStack.Screen name='GameSelectScreen' component={GameSelectScreen} />
+        <AppStack.Screen name='GameSettingsScreen' component={GameSettingsScreen} />
       </AppStack.Navigator>
     </NavigationContainer>
   );

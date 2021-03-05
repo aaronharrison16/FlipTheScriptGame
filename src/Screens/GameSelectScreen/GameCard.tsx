@@ -1,21 +1,22 @@
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
-interface GameModeListItemProps {
+interface GameCardProps {
   name: string;
   onPress: () => void;
-  index: number;
 }
 
-const { width, height } = Dimensions.get('window')
 export const MARGIN = 10
 export const CARD_HEIGHT = 200
 
-const GameCard = ({ name, onPress, index }: GameModeListItemProps) => {
+const GameCard = ({ name, onPress }: GameCardProps) => {
   return (
-    <View style={[styles.card]}>
-      <Text>{name}</Text>
-    </View>
+    <TouchableNativeFeedback onPress={onPress}>
+      <View style={[styles.card]}>
+        <Text>{name}</Text>
+      </View>
+    </TouchableNativeFeedback>
   )
 }
 

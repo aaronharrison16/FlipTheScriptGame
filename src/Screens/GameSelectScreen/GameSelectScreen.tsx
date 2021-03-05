@@ -4,7 +4,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, { add, Extrapolate, interpolate } from 'react-native-reanimated';
 import { usePanGestureHandler, withDecay, diffClamp } from  'react-native-redash/lib/module/v1';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
-import { GameCard, CARD_HEIGHT, MARGIN } from '../GameSelectScreen';
+import GameCard, { CARD_HEIGHT, MARGIN } from './GameCard';
 
 const DATA = [
   {
@@ -96,6 +96,12 @@ const GameSelectScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameS
     - DATA.length * HEIGHT + visibleCards * HEIGHT,
     0
   );
+
+  const onGameCardPress = (gameMode: object) => {
+    console.log(gameMode)
+    navigation.navigate('GameSettingsScreen')
+  }
+
   return (
     <View style={ styles.container }>
       <PanGestureHandler { ...gestureHandler }>
@@ -132,8 +138,7 @@ const GameSelectScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameS
                 >
                   <GameCard
                     name={gameMode.name}
-                    onPress={() => {}}
-                    index={i}
+                    onPress={() => onGameCardPress(gameMode)}
                   />
                 </Animated.View>
               )
