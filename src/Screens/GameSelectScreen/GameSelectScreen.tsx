@@ -1,8 +1,6 @@
-import React from 'react';
-import {  Dimensions, StyleSheet, View } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, { add, Extrapolate, interpolate } from 'react-native-reanimated';
-import { usePanGestureHandler, withDecay, diffClamp } from  'react-native-redash/lib/module/v1';
+import React, { useState } from 'react';
+import { Dimensions, FlatList, StyleSheet, View, Text } from 'react-native';
+import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import GameCard, { CARD_HEIGHT, MARGIN } from './GameCard';
 
@@ -81,78 +79,107 @@ const DATA = [
   },
 ]
 
-const { height } = Dimensions.get('window');
-const HEIGHT = CARD_HEIGHT + MARGIN * 2
+const { width } = Dimensions.get('window')
+
+const formatData = (data: Object[], numColumns: number) => {
+  const numberOfFullRows = Math.floor(data.length / numColumns)
+  var numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns)
+
+  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
+    data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+    numberOfElementsLastRow++;
+  }
+
+  return data
+}
 
 const GameSelectScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameSelectScreen'>) => {
-  const { gestureHandler, translation, velocity, state } = usePanGestureHandler();
-  const visibleCards = Math.floor(height / HEIGHT)
-  const y = diffClamp(
-    withDecay({
-      value: translation.y,
-      velocity: velocity.y,
-      state
-    }),
-    - DATA.length * HEIGHT + visibleCards * HEIGHT,
-    0
-  );
+  const [selectedGame, setSelectedGame] = useState('')
+  const numColumns = 3
 
-  const onGameCardPress = (gameMode: object) => {
-    console.log(gameMode)
-    navigation.navigate('GameSettingsScreen')
+  const onGameCardPress = (itemKey: string) => {
+    setSelectedGame(itemKey)
+  }
+
+  const onPlayPress = () => {
+    var game = {}
+    for (const i in DATA) {
+      const item = DATA[i]
+      if (item.key === selectedGame) {
+        game = item
+        break
+      }
+    }
+
+    navigation.navigate('GameScreen')
+  }
+
+  const Header = () => (
+    <View style={styles.headerContainer}>
+      <Text>TODO - Select game copy</Text>
+      <Text>TODO - Select game subcopy</Text>
+    </View>
+  )
+
+  const Footer = () => (
+    <View style={styles.footerContainer} >
+      <Button onPress={onPlayPress}>Todo - play game</Button>
+    </View>
+  )
+
+  const Item = ({ item }) => {
+    const isSelected = selectedGame === item.key ? true : false
+    if (item.empty) {
+      return (
+        <View style={styles.empty} />
+      )
+    } else {
+      return (
+        <GameCard
+          name={item.name}
+          itemKey={item.key}
+          onPress={onGameCardPress}
+          selected={isSelected}
+        />
+      )
+    }
   }
 
   return (
-    <View style={ styles.container }>
-      <PanGestureHandler { ...gestureHandler }>
-        <Animated.View>
-          { DATA.map((gameMode, i) => {
-            const positionY = add(y, i * HEIGHT)
-            const isDisappearing = -HEIGHT
-            const isOnTop = 0
-            const isOnBottom = (visibleCards - 1) * HEIGHT
-            const isAppearing = visibleCards * HEIGHT
-            const extraTranslation = interpolate(positionY, {
-              inputRange: [isOnBottom, isAppearing],
-              outputRange: [0, -HEIGHT / 4],
-              extrapolate: Extrapolate.CLAMP
-            });
-            const translateY = add(interpolate(y, {
-              inputRange: [-HEIGHT * i, 0],
-              outputRange: [-HEIGHT * i, 0],
-              extrapolate: Extrapolate.CLAMP
-            }), extraTranslation);
-            const scale = interpolate(positionY, {
-              inputRange: [isDisappearing, isOnTop, isOnBottom, isAppearing],
-              outputRange: [0.6, 1, 1, 0.6],
-              extrapolate: Extrapolate.CLAMP
-            })
-            const opacity = interpolate(positionY, {
-              inputRange: [isDisappearing, isOnTop, isOnBottom, isAppearing],
-              outputRange: [0, 1, 1, 0.5],
-            })
-              return (
-                <Animated.View
-                  style={{ opacity, transform: [{ translateY }, { scale }] }}
-                  key={i}  
-                >
-                  <GameCard
-                    name={gameMode.name}
-                    onPress={() => onGameCardPress(gameMode)}
-                  />
-                </Animated.View>
-              )
-            })
-          }
-        </Animated.View>
-      </PanGestureHandler>
-    </View>
+    <FlatList
+      ListHeaderComponent={Header}
+      ListFooterComponent={Footer}
+      numColumns={numColumns}
+      data={formatData(DATA, numColumns)}
+      renderItem={Item}
+      style={{ width }}
+      contentContainerStyle={styles.container}
+    />
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  headerContainer: {
+    height: 160,
+    width,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  footerContainer: {
+    height: 150,
+    width,
+    backgroundColor: 'yellow',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  empty: {
+    height: CARD_HEIGHT,
+    width: CARD_HEIGHT,
+    margin: MARGIN
   }
 })
 

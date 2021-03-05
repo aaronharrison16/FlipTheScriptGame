@@ -8,6 +8,8 @@ import { teamColors } from '../../Themes/Colors';
 import TeamCard from './TeamCard';
 import Metrics from '../../Themes/Metrics';
 import ApplicationStyles from '../../Themes/ApplicationStyles';
+import { Button } from '../../Components';
+import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
 const teamList = [
   { teamName: 'Team 1' },
@@ -20,7 +22,7 @@ interface Team {
   teamColor?: string
 }
 
-const GameSettingsScreen = () => {
+const GameSettingsScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameSettingsScreen'>) => {
   const { colors } = useTheme();
   const [numberOfTeams, SetNumberOfTeams] = useState(teamList.length)
   const [totalTeamsCreated, setTotalTeamsCreated] = useState(teamList.length)
@@ -41,6 +43,10 @@ const GameSettingsScreen = () => {
   const deleteTeam = (index: number) => {
     teamList.splice(index, 1);
     SetNumberOfTeams(numberOfTeams - 1)
+  }
+
+  const OnGameSelect = () => {
+    navigation.navigate('GameSelectScreen')
   }
 
   const renderHeader = () => {
@@ -98,6 +104,7 @@ const GameSettingsScreen = () => {
         ListFooterComponent={renderFooter}
         keyExtractor={(item) => item.teamName}
       />
+      <Button onPress={OnGameSelect}>TODO - Game Select</Button>
     </View>
   )
 }
