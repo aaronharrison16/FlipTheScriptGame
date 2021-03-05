@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import { teamColors } from '../../Themes/Colors'
+import Metrics from '../../Themes/Metrics';
 
 interface TeamCardProps {
   name: string;
@@ -57,10 +58,11 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignSelf: 'center',
     height: 100,
-    width: '90%',
-    marginTop: 10,
-    padding: 10,
-    borderRadius: 5
+    width: '100%',
+    marginBottom: Metrics.margins.base,
+    padding: Metrics.margins.base,
+    borderRadius: Metrics.borderRadius.card,
+    elevation: 2
   },
   topRow: {
     flexDirection: 'row',
@@ -76,14 +78,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    margin: 10
+    margin: Metrics.margins.base,
+    elevation: 1
   },
   colorCircle: {
     width: 40,
     height: 40,
     borderRadius: 90,
-    backgroundColor: 'yellow',
-    marginRight: 7,
+    marginRight: Metrics.margins.small,
     borderWidth: 2,
   }
 })

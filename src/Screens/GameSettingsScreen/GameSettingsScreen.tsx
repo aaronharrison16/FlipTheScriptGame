@@ -6,6 +6,8 @@ import { useTheme } from '@react-navigation/native';
 
 import { teamColors } from '../../Themes/Colors';
 import TeamCard from './TeamCard';
+import Metrics from '../../Themes/Metrics';
+import ApplicationStyles from '../../Themes/ApplicationStyles';
 
 const teamList = [
   { teamName: 'Team 1' },
@@ -39,6 +41,20 @@ const GameSettingsScreen = () => {
   const deleteTeam = (index: number) => {
     teamList.splice(index, 1);
     SetNumberOfTeams(numberOfTeams - 1)
+  }
+
+  const renderHeader = () => {
+    return (
+    <View>
+      <View style={styles.gameSettingsContainer}>
+        <Text style={styles.title}>Game Settings</Text>
+        <View style={[styles.gameSettingsCard, { backgroundColor: colors.card }]}>
+
+        </View>
+      </View>
+      <Text style={styles.title}>Team Settings</Text>
+    </View>
+    )
   }
 
   const renderItem = ({ item, index }: { item: Team, index: number }) => {
@@ -75,22 +91,24 @@ const GameSettingsScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        style={{ paddingHorizontal: Metrics.margins.base }}
         data={teamList}
         renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
         keyExtractor={(item) => item.teamName}
       />
-      <Text>TODO: Game settings (timer length)</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  ...ApplicationStyles,
   container: {
-    flex: 1
+    flex: 1,
   },
   manageTeamsButtonContainer: {
-    padding: 10,
+    padding: Metrics.margins.base,
     alignItems: 'center'
   },
   manageTeamsButtonOuter: {
@@ -104,6 +122,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  gameSettingsContainer: {
+    marginBottom: Metrics.margins.xLarge,
+    marginTop: Metrics.margins.base
+  },
+  gameSettingsCard: {
+    alignSelf: 'center',
+    height: 180,
+    width: '100%',
+    borderRadius: Metrics.borderRadius.card,
+    elevation: 2
   }
 })
 

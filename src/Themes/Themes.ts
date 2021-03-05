@@ -7,7 +7,7 @@ const Themes = {
       primary: pallete.starCommanderBlue,
       background: pallete.light,
       text: pallete.dark,
-      card: 'rgb(255, 255, 255)',
+      card: '#EEEEEE',
       border: '#c7c7cc',
       notification: 'rgb(255, 69, 58)',
     }
