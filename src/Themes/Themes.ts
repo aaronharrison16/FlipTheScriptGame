@@ -4,24 +4,26 @@ const Themes = {
   lightTheme: {
     dark: false,
     colors: {
-      primary: pallete.starCommanderBlue,
-      background: pallete.light,
-      text: pallete.dark,
-      card: '#EEEEEE',
-      border: '#c7c7cc',
-      notification: 'rgb(255, 69, 58)',
+      primary: pallete.usafaBlue,
+      background: pallete.cultured,
+      text: pallete.oxfordBlue,
+      card: pallete.gainsboro,
+      border: pallete.lightGrey,
+      notification: pallete.indianRed,
     }
   },
 
-  // darkTheme: {
-  //   dark: true,
-  //   colors: {
-  //     primary: Colors.cederChest,
-  //     secondary: Colors.cadetBlue,
-  //     background: Colors.dark,
-  //     text: Colors.light,
-  //   }
-  // }
+  darkTheme: {
+    dark: true,
+    colors: {
+      primary: pallete.usafaBlue,
+      background: pallete.oxfordBlue,
+      text: pallete.cultured,
+      card: pallete.independence,
+      border: pallete.independence,
+      notification: pallete.indianRed,
+    }
+  }
 }
 
 export default Themes;

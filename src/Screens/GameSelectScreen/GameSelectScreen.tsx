@@ -1,3 +1,4 @@
+import { useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, View, Text } from 'react-native';
 import { Button } from '../../Components';
@@ -93,7 +94,8 @@ const formatData = (data: Object[], numColumns: number) => {
   return data
 }
 
-const GameSelectScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameSelectScreen'>) => {
+const GameSelectScreen = ({ navigation, route }: StackNavigationProps<AppRoutes, 'GameSelectScreen'>) => {
+  const { colors } = useTheme();
   const [selectedGame, setSelectedGame] = useState('')
   const numColumns = 3
 
@@ -102,22 +104,15 @@ const GameSelectScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'GameS
   }
 
   const onPlayPress = () => {
-    var game = {}
-    for (const i in DATA) {
-      const item = DATA[i]
-      if (item.key === selectedGame) {
-        game = item
-        break
-      }
-    }
-
+    var gameSettings = route.params
+    console.log(gameSettings)
     navigation.navigate('GameScreen')
   }
 
   const Header = () => (
     <View style={styles.headerContainer}>
-      <Text>TODO - Select game copy</Text>
-      <Text>TODO - Select game subcopy</Text>
+      <Text style={{ color: colors.text }}>TODO - Select game copy</Text>
+      <Text style={{ color: colors.text }}>TODO - Select game subcopy</Text>
     </View>
   )
 
@@ -172,7 +167,6 @@ const styles = StyleSheet.create({
   footerContainer: {
     height: 150,
     width,
-    backgroundColor: 'yellow',
     justifyContent: 'center',
     alignItems: 'center'
   },

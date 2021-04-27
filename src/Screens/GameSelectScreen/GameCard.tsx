@@ -1,6 +1,6 @@
 import React from 'react';
+import { useTheme } from '@react-navigation/native';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 interface GameCardProps {
   name: string;
@@ -13,38 +13,46 @@ export const MARGIN = 5
 export const CARD_HEIGHT = 120
 
 const GameCard = ({ name, itemKey, onPress, selected }: GameCardProps) => {
-  const selectionStyle = selected ? styles.selected : styles.notSelected
-
+  const { colors } = useTheme();
+  const borderColor = selected ? colors.notification : colors.card
+  
   const onCardPress = () => {
     onPress(itemKey)
   }
 
   return (
     <TouchableOpacity onPress={onCardPress}>
-      <View style={[styles.card, selectionStyle]}>
-        <Text>{name}</Text>
+      <View style={[styles.card, {borderColor, backgroundColor: colors.card}]}>
+        <View style={[styles.cardImage, {backgroundColor: colors.primary}]} />
+        <Text style={{ color: colors.text }}>{name}</Text>
       </View>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
+  cardTouchContainer: {
+    height: CARD_HEIGHT,
+    width: CARD_HEIGHT,
+    borderRadius: 25,
+    overflow: 'hidden'
+  },
   card: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e2dcde',
     flex: 1,
     margin: MARGIN,
     height: CARD_HEIGHT,
     width: CARD_HEIGHT,
     borderWidth: 3,
-    borderRadius: 25
+    borderRadius: 25,
+    overflow: 'hidden'
   },
-  selected: {
-    borderColor: 'green'
-  },
-  notSelected: {
-    borderColor: '#e2dcde'
+  cardImage: {
+    height: 60,
+    width: 60,
+    marginBottom: 5,
+    borderRadius: 90,
   }
 })
 

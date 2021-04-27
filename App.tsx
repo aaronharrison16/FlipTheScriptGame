@@ -11,13 +11,10 @@ import GameSettingsScreen from './src/Screens/GameSettingsScreen/GameSettingsScr
 import Themes from './src/Themes/Themes';
 
 const AppStack = createStackNavigator<AppRoutes>();
-const AppTheme = {
-  ...Themes.lightTheme
-}
 
 const App = () => {
   return (
-    <NavigationContainer theme={AppTheme}>
+    <NavigationContainer>
       <AppStack.Navigator headerMode='none'>
         <AppStack.Screen name='HomeScreen' component={HomeScreen} />
         <AppStack.Screen name='GameScreen' component={GameScreen} />

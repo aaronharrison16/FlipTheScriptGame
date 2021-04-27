@@ -26,6 +26,8 @@ const GameSettingsScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'Gam
   const { colors } = useTheme();
   const [numberOfTeams, SetNumberOfTeams] = useState(teamList.length)
   const [totalTeamsCreated, setTotalTeamsCreated] = useState(teamList.length)
+  const [scoreLimit, setScoreLimit] = useState(11)
+  const [timeLimit, setTimeLimit] = useState(15)
 
   const setTeamColor = (teamColor: string, index: number) => {
     const team: Team = teamList[index]
@@ -46,7 +48,12 @@ const GameSettingsScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'Gam
   }
 
   const OnGameSelect = () => {
-    navigation.navigate('GameSelectScreen')
+    navigation.navigate('GameSelectScreen', {
+      gameSettings: {
+        scoreLimit,
+        timeLimit
+      }
+    })
   }
 
   const renderHeader = () => {
@@ -55,7 +62,50 @@ const GameSettingsScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'Gam
       <View style={styles.gameSettingsContainer}>
         <Text style={styles.title}>Game Settings</Text>
         <View style={[styles.gameSettingsCard, { backgroundColor: colors.card }]}>
-
+          <View>
+            <Text>
+              Score Limit
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableNativeFeedback onPress={() => setScoreLimit(scoreLimit - 1)}>
+                <Icon 
+                  name='remove-circle' 
+                  size={60}
+                  style={{ color: colors.border }}
+                />
+              </TouchableNativeFeedback>
+              <Text>{scoreLimit}</Text>
+              <TouchableNativeFeedback onPress={() => setScoreLimit(scoreLimit + 1)}>
+                <Icon 
+                  name='add-circle' 
+                  size={60}
+                  style={{ color: colors.border }}
+                />
+              </TouchableNativeFeedback>
+            </View>
+          </View>
+          <View>
+            <Text>
+              Time Limit
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableNativeFeedback onPress={() => setTimeLimit(timeLimit - 5)}>
+                <Icon 
+                  name='remove-circle' 
+                  size={60}
+                  style={{ color: colors.border }}
+                />
+              </TouchableNativeFeedback>
+              <Text>{timeLimit}</Text>
+              <TouchableNativeFeedback onPress={() => setTimeLimit(timeLimit + 5)}>
+                <Icon 
+                  name='add-circle' 
+                  size={60}
+                  style={{ color: colors.border }}
+                />
+              </TouchableNativeFeedback>
+            </View>
+          </View>
         </View>
       </View>
       <Text style={styles.title}>Team Settings</Text>
