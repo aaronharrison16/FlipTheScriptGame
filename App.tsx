@@ -8,7 +8,6 @@ import HomeScreen from './src/Screens/HomeScreen';
 import GameScreen from './src/Screens/GameScreen';
 import GameSelectScreen from './src/Screens/GameSelectScreen';
 import GameSettingsScreen from './src/Screens/GameSettingsScreen/GameSettingsScreen';
-import Themes from './src/Themes/Themes';
 
 const AppStack = createStackNavigator<AppRoutes>();
 

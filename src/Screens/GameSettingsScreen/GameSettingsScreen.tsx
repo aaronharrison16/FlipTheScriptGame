@@ -51,8 +51,9 @@ const GameSettingsScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'Gam
     navigation.navigate('GameSelectScreen', {
       gameSettings: {
         scoreLimit,
-        timeLimit
-      }
+        timeLimit,
+        teamList
+      },
     })
   }
 

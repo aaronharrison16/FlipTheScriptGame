@@ -80,14 +80,21 @@ const DATA = [
   },
 ]
 
+interface Game {
+  name: string;
+  key: string;
+  empty?: boolean;
+  gameModeList?: string[];
+}
+
 const { width } = Dimensions.get('window')
 
-const formatData = (data: Object[], numColumns: number) => {
+const formatData = (data: Game[], numColumns: number) => {
   const numberOfFullRows = Math.floor(data.length / numColumns)
   var numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns)
 
   while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-    data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+    data.push({ name: "", key: `blank-${numberOfElementsLastRow}`, empty: true });
     numberOfElementsLastRow++;
   }
 
@@ -104,9 +111,9 @@ const GameSelectScreen = ({ navigation, route }: StackNavigationProps<AppRoutes,
   }
 
   const onPlayPress = () => {
-    var gameSettings = route.params
-    console.log(gameSettings)
-    navigation.navigate('GameScreen')
+    const gameMode = DATA.find(element => element.key === selectedGame)
+    var gameSettings = {...route.params.gameSettings, gameMode}
+    navigation.navigate('GameScreen', { gameSettings })
   }
 
   const Header = () => (
@@ -122,7 +129,7 @@ const GameSelectScreen = ({ navigation, route }: StackNavigationProps<AppRoutes,
     </View>
   )
 
-  const Item = ({ item }) => {
+  const Item = ({ item }: { item: Game }) => {
     const isSelected = selectedGame === item.key ? true : false
     if (item.empty) {
       return (
