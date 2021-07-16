@@ -12,8 +12,8 @@ import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
 const teamList = [
-  { teamName: 'Team 1' },
-  { teamName: 'Team 2' }
+  { teamName: 'Team 1', score: 0 },
+  { teamName: 'Team 2', score: 0 }
 ]
 
 interface Team {
@@ -36,7 +36,7 @@ const GameSettingsScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'Gam
 
   const createNewTeam = () => {
     const teamNumber = totalTeamsCreated + 1
-    const newTeam = { teamName: `Team ${teamNumber}` }
+    const newTeam = { teamName: `Team ${teamNumber}`, score: 0 }
     teamList.push(newTeam)
     setTotalTeamsCreated(totalTeamsCreated + 1)
     SetNumberOfTeams(numberOfTeams + 1)
