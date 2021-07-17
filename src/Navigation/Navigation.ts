@@ -1,6 +1,7 @@
   
 import { ParamListBase, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { GameSettings } from '../Screens/GameSettingsScreen'
 
 export interface StackNavigationProps<
   ParamList extends ParamListBase,
@@ -12,7 +13,7 @@ export interface StackNavigationProps<
 
 export type AppRoutes = {
   HomeScreen: undefined;
-  GameScreen: { gameSettings: object };
+  GameScreen: { gameSettings: GameSettings };
   GameSelectScreen: { gameSettings: object };
   GameSettingsScreen: undefined;
 }

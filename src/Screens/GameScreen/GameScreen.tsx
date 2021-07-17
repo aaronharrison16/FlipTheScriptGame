@@ -8,8 +8,8 @@ import {
   Text,
 } from 'react-native';
 import AudioRecord from 'react-native-audio-record';
-import { Scoreboard } from '.';
-import { Button, RecordButton } from '../../Components';
+import Scoreboard from './Scoreboard';
+import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
 const { ReverseAudioModule } = NativeModules;
@@ -17,16 +17,22 @@ const { ReverseAudioModule } = NativeModules;
 const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) => {
   const [audioFilePath, setAudioFilePath] = useState('')
   const gameSettings = route.params.gameSettings
-  const wordLibrary = gameSettings.gameMode.gameModeList
   const teamList = gameSettings.teamList
-  const [turnWord, setTurnWord] = useState(wordLibrary.splice(Math.floor(Math.random()*wordLibrary.length), 1))
-  const [activeTeam, setActiveTeam] = useState(teamList[Math.floor(Math.random()*teamList.length)])
+  const [wordLibrary, setWordLibrary] = useState([...gameSettings.gameMode.gameModeList])
+  const [turnWord, setTurnWord] = useState("")
+  const [activeTeamIndex, setActiveTeamIndex] = useState(Math.floor(Math.random()*teamList.length))
+  const [isRecorded, setIsRecorded] = useState(false)
   
   useEffect(() => {
-    console.log(wordLibrary)
-    console.log(teamList)
+    onChangeWord()
     PermissionsAndroid.request('android.permission.RECORD_AUDIO')
   }, [])
+
+  const onChangeWord = () => {
+    const remainingWords = [...wordLibrary]
+    setTurnWord(remainingWords.splice(Math.floor(Math.random()*wordLibrary.length), 1)[0])
+    setWordLibrary(remainingWords)
+  }
 
   const onStartRecording = () => {
     const options = {
@@ -37,13 +43,13 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
       wavFile: 'flipTheScript.wav'
     }
     AudioRecord.init(options);
-
     AudioRecord.start();
   }
 
   const onStopRecording = async () => {
     const audioFile = await AudioRecord.stop();
     setAudioFilePath(audioFile)
+    setIsRecorded(true)
   }
 
   const onPlayRecording = async () => {
@@ -51,13 +57,30 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
   }
 
   const onScore = () => {
-    const team = teamList.find((el) => (el.teamName === activeTeam.teamName))
-    console.log(team)
-    team.score = team.score + 1
+    teamList[activeTeamIndex].score += 1
+    endTurn()
   }
 
   const onNoScore = () => {
+    endTurn()
+  }
 
+  const endTurn = () => {
+    const activeTeam = teamList[activeTeamIndex]
+    if (activeTeam.score === gameSettings.scoreLimit) {
+      console.log("winner winner chicken dinner")
+      return
+      // todo have this be its own congrats screen with a random message from an array
+    }
+    var newIndex = activeTeamIndex + 1
+    
+    if (activeTeamIndex + 1 === teamList.length) {
+      newIndex = 0
+    }
+    
+    setIsRecorded(false)
+    setActiveTeamIndex(newIndex)
+    onChangeWord()
   }
 
   return (
@@ -65,15 +88,22 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
       <StatusBar barStyle="dark-content" />
       <Scoreboard teams={teamList} />
       <SafeAreaView style={styles.container}>
-        <Text>{ activeTeam.teamName }'s turn</Text>
+        <Text>{ teamList[activeTeamIndex].teamName }'s turn</Text>
         <Text>{ turnWord }</Text>
-        <RecordButton
-          onPressIn={onStartRecording}
-          onPressOut={onStopRecording}
-        />
-        <Button onPress={onPlayRecording}>Play Recording</Button>
-        <Button onPress={onNoScore}>No Score</Button>
-        <Button onPress={onScore}>Score!</Button>
+        {
+          !isRecorded ? (
+            <>
+            <Button onPress={onStartRecording}>Start Recording</Button>
+            <Button onPress={onStopRecording}>Stop Recording</Button>
+            </>
+          ) : (
+            <>
+              <Button onPress={onPlayRecording}>Play Recording</Button>
+              <Button onPress={onNoScore}>No Score</Button>
+              <Button onPress={onScore}>Score!</Button>
+            </>
+          )
+        }        
       </SafeAreaView>
     </>
   );

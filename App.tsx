@@ -1,7 +1,8 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { PermissionsAndroid } from 'react-native';
 
 import { AppRoutes } from './src/Navigation/Navigation';
 import HomeScreen from './src/Screens/HomeScreen';
@@ -12,6 +13,10 @@ import GameSettingsScreen from './src/Screens/GameSettingsScreen/GameSettingsScr
 const AppStack = createStackNavigator<AppRoutes>();
 
 const App = () => {
+  useEffect(() => {
+    PermissionsAndroid.request('android.permission.RECORD_AUDIO')
+  }, [])
+
   return (
     <NavigationContainer>
       <AppStack.Navigator headerMode='none'>

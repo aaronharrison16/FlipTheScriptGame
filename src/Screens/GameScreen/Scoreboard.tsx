@@ -9,7 +9,7 @@ const Scoreboard = ({ teams }: ScoreboardProps) => {
   return (
     <View style={styles.scoreboardContainer}>
       {
-        teams.map((team, i) => {
+        teams.map((team:any, i) => {
           return (
             <View key={i} style={[styles.teamContainer]}>
               <Text>{ team.teamName }</Text>
