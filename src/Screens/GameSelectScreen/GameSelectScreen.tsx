@@ -12,7 +12,18 @@ const DATA = [
     gameModeList: [
       'Inception',
       'Up',
-      'Scooby Doo'
+      'Scooby Doo',
+      'A Quiet Place',
+      'Zoolander',
+      'The Other Guys',
+      'Harry Potter',
+      'The Tommorow War',
+      'Cruella Deville',
+      'Hacksaw Ridge',
+      'A Land Before Time',
+      'Pirates of the Caribbean',
+      'The Lord of the Rings',
+      'Star Wars'
     ]
   },
   {
@@ -21,7 +32,18 @@ const DATA = [
     gameModeList: [
       'Inception',
       'Up',
-      'Scooby Doo'
+      'Scooby Doo',
+      'A Quiet Place',
+      'Zoolander',
+      'The Other Guys',
+      'Harry Potter',
+      'The Tommorow War',
+      'Cruella Deville',
+      'Hacksaw Ridge',
+      'A Land Before Time',
+      'Pirates of the Caribbean',
+      'The Lord of the Rings',
+      'Star Wars'
     ]
   },
   {
