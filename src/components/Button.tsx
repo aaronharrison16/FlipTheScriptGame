@@ -12,7 +12,7 @@ const Button = ({ onPress, children, style }: ButtonProps) => {
   const { colors } = useTheme();
 
   return (
-    <TouchableOpacity onPress={onPress} style={{ justifyContent: 'center', alignItems: 'center', width: 250, borderRadius: 10, padding: 25, backgroundColor: colors.notification }}>
+    <TouchableOpacity onPress={onPress} style={{ justifyContent: 'center', alignItems: 'center', width: 250, borderRadius: 10, padding: 25, backgroundColor: colors.notification, ...style }}>
       <Text style={{ color: 'white' }}>{children}</Text>
     </TouchableOpacity>
   )

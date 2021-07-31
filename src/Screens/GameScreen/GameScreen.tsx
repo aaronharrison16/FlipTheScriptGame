@@ -11,10 +11,14 @@ import AudioRecord from 'react-native-audio-record';
 import Scoreboard from './Scoreboard';
 import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
+import { useTheme } from '@react-navigation/native';
 
 const { ReverseAudioModule } = NativeModules;
 
 const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) => {
+  const { colors } = useTheme();
+
+
   const [audioFilePath, setAudioFilePath] = useState('')
   const gameSettings = route.params.gameSettings
   const teamList = gameSettings.teamList
@@ -22,6 +26,7 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
   const [turnWord, setTurnWord] = useState("")
   const [activeTeamIndex, setActiveTeamIndex] = useState(Math.floor(Math.random()*teamList.length))
   const [isRecorded, setIsRecorded] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
   
   useEffect(() => {
     onChangeWord()
@@ -44,12 +49,14 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     }
     AudioRecord.init(options);
     AudioRecord.start();
+    setIsRecording(true)
   }
 
   const onStopRecording = async () => {
     const audioFile = await AudioRecord.stop();
     setAudioFilePath(audioFile)
     setIsRecorded(true)
+    setIsRecording(false)
   }
 
   const onPlayRecording = async () => {
@@ -83,24 +90,29 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     onChangeWord()
   }
 
+  const RecordButton = () => {
+    if (isRecording) {
+      return <Button onPress={onStopRecording}>Stop Recording</Button>
+    } else {
+      return <Button style={{ backgroundColor: colors.primary }} onPress={onStartRecording}>Start Recording</Button>  
+    }
+  }
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <Scoreboard teams={teamList} />
       <SafeAreaView style={styles.container}>
         <Text>{ teamList[activeTeamIndex].teamName }'s turn</Text>
-        <Text>{ turnWord }</Text>
+        <Text style={{ fontSize: 50}}>{ turnWord }</Text>
         {
           !isRecorded ? (
-            <>
-            <Button onPress={onStartRecording}>Start Recording</Button>
-            <Button onPress={onStopRecording}>Stop Recording</Button>
-            </>
+            <RecordButton />
           ) : (
             <>
-              <Button onPress={onPlayRecording}>Play Recording</Button>
+              <Button style={{ backgroundColor: colors.primary }}  onPress={onPlayRecording}>Play Recording</Button>
               <Button onPress={onNoScore}>No Score</Button>
-              <Button onPress={onScore}>Score!</Button>
+              <Button style={{ backgroundColor: colors.primary }} onPress={onScore}>Score!</Button>
             </>
           )
         }        

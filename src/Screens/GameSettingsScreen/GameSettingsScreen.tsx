@@ -63,48 +63,60 @@ const GameSettingsScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'Gam
       <View style={styles.gameSettingsContainer}>
         <Text style={styles.title}>Game Settings</Text>
         <View style={[styles.gameSettingsCard, { backgroundColor: colors.card }]}>
-          <View>
+          <View style={{ flex: 1, justifyContent: "center"}}>
             <Text>
               Score Limit
             </Text>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableNativeFeedback onPress={() => setScoreLimit(scoreLimit - 1)}>
-                <Icon 
-                  name='remove-circle' 
-                  size={60}
-                  style={{ color: colors.border }}
-                />
-              </TouchableNativeFeedback>
-              <Text>{scoreLimit}</Text>
-              <TouchableNativeFeedback onPress={() => setScoreLimit(scoreLimit + 1)}>
-                <Icon 
-                  name='add-circle' 
-                  size={60}
-                  style={{ color: colors.border }}
-                />
-              </TouchableNativeFeedback>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                <TouchableNativeFeedback onPress={() => setScoreLimit(scoreLimit - 1)}>
+                  <Icon 
+                    name='remove-circle' 
+                    size={60}
+                    style={{ color: colors.border }}
+                  />
+                </TouchableNativeFeedback>
+              </View>
+              <View style={{ width: 60, alignItems: "center" }}>
+                <Text style={{ fontSize: 24, margin: 12 }}>{scoreLimit}</Text>
+              </View>
+              <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                <TouchableNativeFeedback onPress={() => setScoreLimit(scoreLimit + 1)}>
+                  <Icon 
+                    name='add-circle' 
+                    size={60}
+                    style={{ color: colors.border }}
+                  />
+                </TouchableNativeFeedback>
+              </View>
             </View>
           </View>
-          <View>
+          <View style={{ flex: 1, justifyContent: "center"}}>
             <Text>
               Time Limit
             </Text>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableNativeFeedback onPress={() => setTimeLimit(timeLimit - 5)}>
-                <Icon 
-                  name='remove-circle' 
-                  size={60}
-                  style={{ color: colors.border }}
-                />
-              </TouchableNativeFeedback>
-              <Text>{timeLimit}</Text>
-              <TouchableNativeFeedback onPress={() => setTimeLimit(timeLimit + 5)}>
-                <Icon 
-                  name='add-circle' 
-                  size={60}
-                  style={{ color: colors.border }}
-                />
-              </TouchableNativeFeedback>
+            <View style={{ flexDirection: "row", alignItems: 'center' }}>
+              <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                <TouchableNativeFeedback onPress={() => setTimeLimit(timeLimit - 5)}>
+                  <Icon 
+                    name='remove-circle' 
+                    size={60}
+                    style={{ color: colors.border }}
+                  />
+                </TouchableNativeFeedback>
+              </View>
+              <View style={{ width: 60, alignItems: "center" }}>
+                <Text style={{ fontSize: 24, margin: 12 }}>{timeLimit}</Text>
+              </View>
+              <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                <TouchableNativeFeedback onPress={() => setTimeLimit(timeLimit + 5)}>
+                  <Icon 
+                    name='add-circle' 
+                    size={60}
+                    style={{ color: colors.border }}
+                  />
+                </TouchableNativeFeedback>
+              </View>
             </View>
           </View>
         </View>
@@ -190,7 +202,8 @@ const styles = StyleSheet.create({
     height: 180,
     width: '100%',
     borderRadius: Metrics.borderRadius.card,
-    elevation: 2
+    elevation: 2,
+    padding: 6
   }
 })
 
