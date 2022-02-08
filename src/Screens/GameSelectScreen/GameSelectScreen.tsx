@@ -23,7 +23,20 @@ const DATA = [
       'A Land Before Time',
       'Pirates of the Caribbean',
       'The Lord of the Rings',
-      'Star Wars'
+      'Star Wars',
+      'Bonnie and Clyde',
+      'Airplane',
+      'Rocky',
+      'Braveheart',
+      'Slumdog Millionaire',
+      'Beauty and the Beast',
+      'Inception',
+      'Die Hard',
+      'Wall-E',
+      'Ghostbusters',
+      'The Wizard of Oz',
+      'The Shawshank Redemption',
+      'Back to the Future'
     ]
   },
   {
