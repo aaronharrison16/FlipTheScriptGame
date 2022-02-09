@@ -12,6 +12,7 @@ import Scoreboard from './Scoreboard';
 import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import { useTheme } from '@react-navigation/native';
+import { RecordButton } from '.';
 
 const { ReverseAudioModule } = NativeModules;
 
@@ -90,13 +91,13 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     onChangeWord()
   }
 
-  const RecordButton = () => {
-    if (isRecording) {
-      return <Button onPress={onStopRecording}>Stop Recording</Button>
-    } else {
-      return <Button style={{ backgroundColor: colors.primary }} onPress={onStartRecording}>Start Recording</Button>  
-    }
-  }
+  // const RecordButton = () => {
+  //   if (isRecording) {
+  //     return <Button onPress={onStopRecording}>Stop Recording</Button>
+  //   } else {
+  //     return <Button style={{ backgroundColor: colors.primary }} onPress={onStartRecording}>Start Recording</Button>  
+  //   }
+  // }
 
   return (
     <>
