@@ -1,37 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   StatusBar,
-  PermissionsAndroid,
   NativeModules,
+  View,
   Text,
 } from 'react-native';
-import AudioRecord from 'react-native-audio-record';
-import Scoreboard from './Scoreboard';
-import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import { useTheme } from '@react-navigation/native';
-import { RecordButton } from '.';
+import { RecordButton, TurnStart } from '.';
+import Metrics from '../../Themes/Metrics';
+import { Button } from '../../Components';
+import Animated, { Extrapolate, interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const { ReverseAudioModule } = NativeModules;
 
 const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) => {
+  const teamNameValue = useSharedValue(75)
   const { colors } = useTheme();
-
-
+  const [screenState, setScreenState] = useState('start')
   const [audioFilePath, setAudioFilePath] = useState('')
   const gameSettings = route.params.gameSettings
   const teamList = gameSettings.teamList
   const [wordLibrary, setWordLibrary] = useState([...gameSettings.gameMode.gameModeList])
   const [turnWord, setTurnWord] = useState("")
   const [activeTeamIndex, setActiveTeamIndex] = useState(Math.floor(Math.random()*teamList.length))
-  const [isRecorded, setIsRecorded] = useState(false)
-  const [isRecording, setIsRecording] = useState(false)
   
   useEffect(() => {
     onChangeWord()
-    PermissionsAndroid.request('android.permission.RECORD_AUDIO')
   }, [])
 
   const onChangeWord = () => {
@@ -40,24 +36,12 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     setWordLibrary(remainingWords)
   }
 
-  const onStartRecording = () => {
-    const options = {
-      sampleRate: 44100,
-      channels: 1,
-      bitsPerSample: 16,
-      audioSource: 6,
-      wavFile: 'flipTheScript.wav'
-    }
-    AudioRecord.init(options);
-    AudioRecord.start();
-    setIsRecording(true)
+  const temp = () => {
+    teamNameValue.value = withSpring(10)
   }
 
-  const onStopRecording = async () => {
-    const audioFile = await AudioRecord.stop();
-    setAudioFilePath(audioFile)
-    setIsRecorded(true)
-    setIsRecording(false)
+  const onFinishRecord = () => {
+
   }
 
   const onPlayRecording = async () => {
@@ -86,41 +70,33 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
       newIndex = 0
     }
     
-    setIsRecorded(false)
     setActiveTeamIndex(newIndex)
     onChangeWord()
   }
 
-  // const RecordButton = () => {
-  //   if (isRecording) {
-  //     return <Button onPress={onStopRecording}>Stop Recording</Button>
-  //   } else {
-  //     return <Button style={{ backgroundColor: colors.primary }} onPress={onStartRecording}>Start Recording</Button>  
-  //   }
-  // }
+  const teamNameAnimation = useAnimatedStyle(() => ({
+    top: teamNameValue.value,
+    fontSize: interpolate(teamNameValue.value, [75,10], [100, 75], Extrapolate.CLAMP)
+  }))
+
+  const passTextAnimation = useAnimatedStyle(() => ({
+    opacity: interpolate(teamNameValue.value, [75, 35], [1,0], Extrapolate.CLAMP)
+  }))
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <Scoreboard teams={teamList} />
-      <SafeAreaView style={styles.container}>
-        <Text>{ teamList[activeTeamIndex].teamName }'s turn</Text>
-        <Text style={{ fontSize: 50}}>{ turnWord }</Text>
-        {
-          !isRecorded ? (
-            <RecordButton
-              onStartRecording={onStartRecording}
-              onStopRecording={onStopRecording}
-            />
-          ) : (
-            <>
-              <Button style={{ backgroundColor: colors.primary }}  onPress={onPlayRecording}>Play Recording</Button>
-              <Button onPress={onNoScore}>No Score</Button>
-              <Button style={{ backgroundColor: colors.primary }} onPress={onScore}>Score!</Button>
-            </>
-          )
-        }        
-      </SafeAreaView>
+      <StatusBar backgroundColor={teamList[activeTeamIndex].teamColor} barStyle="dark-content" />
+      <View style={{flex: 1, alignItems: 'center', backgroundColor: teamList[activeTeamIndex].teamColor}}>
+        <Animated.View style={[{ position: 'absolute', top: 75}, passTextAnimation]}>
+          <Text>Pass the phone to someone on...</Text>
+        </Animated.View>
+        <Animated.Text style={[{ fontWeight: '600', position: 'absolute' }, teamNameAnimation]}>
+          {teamList[activeTeamIndex].teamName}
+        </Animated.Text>
+        <View style={{position: 'absolute', bottom: 16}}>
+          <Button onPress={temp}>temp</Button>
+        </View>
+      </View>
     </>
   );
 }
@@ -129,7 +105,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'green'
   }
 });
 
