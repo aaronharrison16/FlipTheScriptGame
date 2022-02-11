@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import { useTheme } from '@react-navigation/native';
-import { RecordButton, TurnStart } from '.';
+import { RecordButton, TurnActive, TurnStart } from '.';
 import Metrics from '../../Themes/Metrics';
 import { Button } from '../../Components';
 import Animated, { Extrapolate, interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -16,7 +16,6 @@ import Animated, { Extrapolate, interpolate, useAnimatedStyle, useSharedValue, w
 const { ReverseAudioModule } = NativeModules;
 
 const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) => {
-  const teamNameValue = useSharedValue(75)
   const { colors } = useTheme();
   const [screenState, setScreenState] = useState('start')
   const [audioFilePath, setAudioFilePath] = useState('')
@@ -34,10 +33,6 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     const remainingWords = [...wordLibrary]
     setTurnWord(remainingWords.splice(Math.floor(Math.random()*wordLibrary.length), 1)[0])
     setWordLibrary(remainingWords)
-  }
-
-  const temp = () => {
-    teamNameValue.value = withSpring(10)
   }
 
   const onFinishRecord = () => {
@@ -74,40 +69,23 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     onChangeWord()
   }
 
-  const teamNameAnimation = useAnimatedStyle(() => ({
-    top: teamNameValue.value,
-    fontSize: interpolate(teamNameValue.value, [75,10], [100, 75], Extrapolate.CLAMP)
-  }))
-
-  const passTextAnimation = useAnimatedStyle(() => ({
-    opacity: interpolate(teamNameValue.value, [75, 35], [1,0], Extrapolate.CLAMP)
-  }))
-
   return (
     <>
       <StatusBar backgroundColor={teamList[activeTeamIndex].teamColor} barStyle="dark-content" />
-      <View style={{flex: 1, alignItems: 'center', backgroundColor: teamList[activeTeamIndex].teamColor}}>
-        <Animated.View style={[{ position: 'absolute', top: 75}, passTextAnimation]}>
-          <Text>Pass the phone to someone on...</Text>
-        </Animated.View>
-        <Animated.Text style={[{ fontWeight: '600', position: 'absolute' }, teamNameAnimation]}>
-          {teamList[activeTeamIndex].teamName}
-        </Animated.Text>
-        <View style={{position: 'absolute', bottom: 16}}>
-          <Button onPress={temp}>temp</Button>
-        </View>
+      <View style={{flex: 1, backgroundColor: teamList[activeTeamIndex].teamColor }}>
+        <TurnStart
+          team={teamList[activeTeamIndex]}
+          setScreenState={setScreenState}
+          screenState={screenState}
+        />
+        {screenState === 'active' &&
+          <TurnActive word={turnWord} />
+        }
       </View>
     </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: 'green'
-  }
-});
+const styles = StyleSheet.create({});
 
 export default GameScreen;
