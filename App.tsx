@@ -13,10 +13,6 @@ import GameSettingsScreen from './src/Screens/GameSettingsScreen/GameSettingsScr
 const AppStack = createStackNavigator<AppRoutes>();
 
 const App = () => {
-  useEffect(() => {
-    PermissionsAndroid.request('android.permission.RECORD_AUDIO')
-  }, [])
-
   return (
     <NavigationContainer>
       <AppStack.Navigator headerMode='none'>
