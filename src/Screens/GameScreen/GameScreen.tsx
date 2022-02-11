@@ -108,7 +108,10 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
         <Text style={{ fontSize: 50}}>{ turnWord }</Text>
         {
           !isRecorded ? (
-            <RecordButton />
+            <RecordButton
+              onStartRecording={onStartRecording}
+              onStopRecording={onStopRecording}
+            />
           ) : (
             <>
               <Button style={{ backgroundColor: colors.primary }}  onPress={onPlayRecording}>Play Recording</Button>
