@@ -12,8 +12,16 @@ import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
 const teamList = [
-  { teamName: 'Team 1', score: 0 },
-  { teamName: 'Team 2', score: 0 }
+  {
+    teamName: 'Team 1',
+    score: 0,
+    teamColor: teamColors[0]
+  },
+  {
+    teamName: 'Team 2',
+    score: 0,
+    teamColor: teamColors[1]
+  }
 ]
 
 interface Team {
