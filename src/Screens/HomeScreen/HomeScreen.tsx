@@ -7,13 +7,16 @@ const HomeScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'HomeScreen'
   const onPlayPress = () => {
     navigation.navigate('GameSettingsScreen');
   }
+  const onHowToPress = () => {
+    navigation.navigate('HowToScreen')
+  }
 
   return (
     <View style={styles.container}>
       <Button onPress={onPlayPress}>
         Play
       </Button>
-      <Button onPress={() => {}}>
+      <Button onPress={onHowToPress}>
         How to play *TODO*
       </Button>
     </View>

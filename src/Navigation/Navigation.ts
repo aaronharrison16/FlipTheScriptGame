@@ -16,4 +16,5 @@ export type AppRoutes = {
   GameScreen: { gameSettings: GameSettings };
   GameSelectScreen: { gameSettings: object };
   GameSettingsScreen: undefined;
+  HowToScreen: undefined;
 }

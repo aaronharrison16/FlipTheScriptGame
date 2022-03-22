@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Text, View } from 'react-native'
 import Animated, { Easing, Extrapolate, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { TurnTimer } from '.'
 
 interface TurnActiveProps {
   word: string
@@ -46,9 +47,18 @@ const TurnActive = ({word}: TurnActiveProps) => {
         </View>
         <Animated.View style={[{alignItems: 'center'}, timerAnimation]}>
           <Text style={{color: 'white', fontSize: 24}}>Say it backwards in...</Text>
-          <Text style={{color: 'white', fontSize: 24}}>3... 2... 1...</Text>
         </Animated.View>
-        <View></View>
+        <View style={{ position: 'relative', backgroundColor: 'red'}}>
+          {/* <View style={{ position: 'absolute' }}>
+            <Text style={{color: 'white', fontSize: 48}}>3</Text>
+          </View>
+          <View style={{ position: 'absolute' }}>
+            <Text style={{color: 'white', fontSize: 24}}>2</Text>
+          </View>
+          <View style={{ position: 'absolute' }}>
+            <Text style={{color: 'white', fontSize: 24}}>1</Text>
+          </View> */}
+        </View>
       </View>
     </View>
   )

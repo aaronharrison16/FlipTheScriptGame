@@ -4,14 +4,11 @@ import {
   StatusBar,
   NativeModules,
   View,
-  Text,
 } from 'react-native';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import { useTheme } from '@react-navigation/native';
-import { RecordButton, TurnActive, TurnStart } from '.';
-import Metrics from '../../Themes/Metrics';
-import { Button } from '../../Components';
-import Animated, { Extrapolate, interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { TurnActive, TurnStart } from '.';
+import AudioRecord from 'react-native-audio-record';
 
 const { ReverseAudioModule } = NativeModules;
 
@@ -33,6 +30,19 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     const remainingWords = [...wordLibrary]
     setTurnWord(remainingWords.splice(Math.floor(Math.random()*wordLibrary.length), 1)[0])
     setWordLibrary(remainingWords)
+  }
+
+  const onStartRecording = () => {
+    const options = {
+      sampleRate: 44100,
+      channels: 1,
+      bitsPerSample: 16,
+      audioSource: 6,
+      wavFile: 'flipTheScript.wav'
+    }
+    AudioRecord.init(options);
+    AudioRecord.start();
+    setIsRecording(true)
   }
 
   const onFinishRecord = () => {

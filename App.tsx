@@ -9,6 +9,7 @@ import HomeScreen from './src/Screens/HomeScreen';
 import GameScreen from './src/Screens/GameScreen';
 import GameSelectScreen from './src/Screens/GameSelectScreen';
 import GameSettingsScreen from './src/Screens/GameSettingsScreen/GameSettingsScreen';
+import HowToScreen from './src/Screens/HowToScreen/HowToScreen';
 
 const AppStack = createStackNavigator<AppRoutes>();
 
@@ -20,6 +21,7 @@ const App = () => {
         <AppStack.Screen name='GameScreen' component={GameScreen} />
         <AppStack.Screen name='GameSelectScreen' component={GameSelectScreen} />
         <AppStack.Screen name='GameSettingsScreen' component={GameSettingsScreen} />
+        <AppStack.Screen name='HowToScreen' component={HowToScreen} />
       </AppStack.Navigator>
     </NavigationContainer>
   );
