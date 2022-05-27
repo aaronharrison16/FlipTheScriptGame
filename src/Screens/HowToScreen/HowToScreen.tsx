@@ -46,7 +46,7 @@ const HowToScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'HowToScree
   }))
   const carouselContentAnimation = (index: number) => useAnimatedStyle(() => ({
     opacity: interpolate(slideIndex.value, [index - 1, index, index + 1], [0,1,0], Extrapolate.CLAMP),
-    transform: [{translateX: interpolate(slideIndex.value, [index - 1, index, index + 1], [70,0,-70], Extrapolate.CLAMP)}]
+    transform: [{translateX: interpolate(slideIndex.value, [index - 1, index, index + 1], [70,0,-70], Extrapolate.CLAMP)}],
   }))
 
   return (
@@ -65,7 +65,7 @@ const HowToScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'HowToScree
         /> */}
       </View>
       <View style={{ flex: 1, padding: 24 }}>
-        <View style={[styles.card, { borderColor: colors.border, }]}>
+        <View style={[styles.card]}>
           <View style={{flex: 1, alignItems: 'center'}}>
             {
               slides.map((slide, i) => (
