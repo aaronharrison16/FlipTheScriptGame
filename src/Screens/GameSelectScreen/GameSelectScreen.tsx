@@ -1,9 +1,10 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, View, Text } from 'react-native';
 import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import GameCard, { CARD_HEIGHT, MARGIN } from './GameCard';
+import firestore from '@react-native-firebase/firestore';
 
 const DATA = [
   {
@@ -140,6 +141,11 @@ const GameSelectScreen = ({ navigation, route }: StackNavigationProps<AppRoutes,
   const { colors } = useTheme();
   const [selectedGame, setSelectedGame] = useState('')
   const numColumns = 3
+
+  useEffect(() => {
+    firestore().collection('game_modes').get()
+      .then((res) => console.log(res))
+  }, [])
 
   const onGameCardPress = (itemKey: string) => {
     setSelectedGame(itemKey)

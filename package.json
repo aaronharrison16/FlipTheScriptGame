@@ -12,6 +12,8 @@
   "dependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^14.10.1",
+    "@react-native-firebase/firestore": "^14.10.1",
     "@react-navigation/native": "^5.9.0",
     "@react-navigation/stack": "^5.13.0",
     "eslint-plugin-import": "^2.22.1",
