@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "659597442651",
+    "project_id": "flipthescript-21ca1",
+    "storage_bucket": "flipthescript-21ca1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659597442651:android:53e6ccc91fa99548f1497e",
+        "android_client_info": {
+          "package_name": "com.flipthescript"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659597442651-5oeb4hp754ibo3lnge7si0al257kckcb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flipthescript",
+            "certificate_hash": "78bc7354d0e5d7e12e8c213dcd36293c4432c51d"
+          }
+        },
+        {
+          "client_id": "659597442651-2ck7dqi0sqa6q6ovj3oplv5sj8vi5u37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2Y2mYBQ3QPoRX4VKaoFZFCdTgrK3no9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659597442651-2ck7dqi0sqa6q6ovj3oplv5sj8vi5u37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
