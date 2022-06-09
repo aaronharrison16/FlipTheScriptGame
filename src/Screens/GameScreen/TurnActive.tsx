@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
+import AudioRecord from 'react-native-audio-record'
 import Animated, { Easing, Extrapolate, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TurnTimer } from '.'
+import { Button } from '../../Components'
 
 interface TurnActiveProps {
-  word: string
+  word: string,
+  onRecord: () => void,
+  onStopRecord: (turnState: string) => void
 }
 
-const TurnActive = ({word}: TurnActiveProps) => {
+const TurnActive = ({word, onRecord, onStopRecord}: TurnActiveProps) => {
+  const [isRecording, setIsRecording] = useState(false)
   const shared = useSharedValue(0)
 
   useEffect(() => {
@@ -18,6 +23,15 @@ const TurnActive = ({word}: TurnActiveProps) => {
       }
     )
   }, [])
+
+  const stopRecord = () => {
+    onStopRecord("end")
+  }
+
+  const record = () => {
+    onRecord()
+    setIsRecording(true)
+  }
 
   const introAnimation = useAnimatedStyle(() => ({
     opacity: interpolate(shared.value, [1,2], [0,1], Extrapolate.CLAMP)
@@ -48,16 +62,12 @@ const TurnActive = ({word}: TurnActiveProps) => {
         <Animated.View style={[{alignItems: 'center'}, timerAnimation]}>
           <Text style={{color: 'white', fontSize: 24}}>Say it backwards in...</Text>
         </Animated.View>
-        <View style={{ position: 'relative', backgroundColor: 'red'}}>
-          {/* <View style={{ position: 'absolute' }}>
-            <Text style={{color: 'white', fontSize: 48}}>3</Text>
-          </View>
-          <View style={{ position: 'absolute' }}>
-            <Text style={{color: 'white', fontSize: 24}}>2</Text>
-          </View>
-          <View style={{ position: 'absolute' }}>
-            <Text style={{color: 'white', fontSize: 24}}>1</Text>
-          </View> */}
+        <View>
+          { isRecording ? (
+            <Button onPress={stopRecord}>Stop Recording</Button>
+            ) : (
+            <Button onPress={record}>Start Recording</Button>
+          )}
         </View>
       </View>
     </View>

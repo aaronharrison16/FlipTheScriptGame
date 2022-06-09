@@ -9,6 +9,7 @@ import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import { useTheme } from '@react-navigation/native';
 import { TurnActive, TurnStart } from '.';
 import AudioRecord from 'react-native-audio-record';
+import TurnEnd from './TurnEnd';
 
 const { ReverseAudioModule } = NativeModules;
 
@@ -40,17 +41,17 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
       audioSource: 6,
       wavFile: 'flipTheScript.wav'
     }
-    AudioRecord.init(options);
-    AudioRecord.start();
-    setIsRecording(true)
+    // AudioRecord.init(options);
+    // AudioRecord.start();
   }
 
-  const onFinishRecord = () => {
-
+  const onFinishRecord = (screen: string) => {
+    setScreenState(screen)
+    // AudioRecord.stop()
   }
 
   const onPlayRecording = async () => {
-    ReverseAudioModule.reverseAudioRecordingEvent(audioFilePath);
+    // ReverseAudioModule.reverseAudioRecordingEvent(audioFilePath);
   }
 
   const onScore = () => {
@@ -77,19 +78,31 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     
     setActiveTeamIndex(newIndex)
     onChangeWord()
+    setScreenState('active')
   }
 
   return (
     <>
       <StatusBar backgroundColor={teamList[activeTeamIndex].teamColor} barStyle="dark-content" />
-      <View style={{flex: 1, backgroundColor: teamList[activeTeamIndex].teamColor }}>
+      <View style={{flex: 1, backgroundColor: 'steelblue' }}>
         <TurnStart
           team={teamList[activeTeamIndex]}
           setScreenState={setScreenState}
           screenState={screenState}
         />
         {screenState === 'active' &&
-          <TurnActive word={turnWord} />
+          <TurnActive
+            word={turnWord}
+            onRecord={onStartRecording}
+            onStopRecord={onFinishRecord}
+          />
+        }
+        {screenState === 'end' &&
+          <TurnEnd
+            onPlayRecording={onPlayRecording}
+            onRightAnswer={onScore}
+            onWrongAnswer={onNoScore}
+          />
         }
       </View>
     </>

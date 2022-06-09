@@ -1,7 +1,7 @@
 export { default } from './GameScreen'
 export { default as RecordButton } from './RecordButton'
 export { default as Scoreboard } from './Scoreboard'
-export { default as NoScoreButton } from './NoScoreButton'
 export { default as TurnStart } from './TurnStart'
 export { default as TurnActive } from './TurnActive'
 export { default as TurnTimer } from './TurnTimer'
+export { default as TurnEnd } from './TurnEnd'

@@ -3,9 +3,25 @@ import { View, StyleSheet, Image } from 'react-native';
 import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
+const teamList = [
+  {
+    teamName: 'Team 1',
+  },
+  {
+    teamName: 'Team 2',
+  },
+];
+
+const gameSettings = {
+  scoreLimit: 7,
+  timeLimit: 15,
+  teamList,
+};
+
+
 const HomeScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'HomeScreen'>) => {
   const onPlayPress = () => {
-    navigation.navigate('GameSettingsScreen');
+    navigation.navigate('GameSelectScreen', { gameSettings });
   }
   const onHowToPress = () => {
     navigation.navigate('HowToScreen')
@@ -14,12 +30,7 @@ const HomeScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'HomeScreen'
   return (
     <View style={styles.container}>
       <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
-        <Image
-          style={styles.logo}
-          source={{
-            uri: 'https://pngset.com/images/utah-jazz-logo-2019-label-text-sticker-symbol-transparent-png-668921.png',
-          }}
-        />
+        
       </View>
       <View style={{ flex: 2, alignItems: 'center', justifyContent: 'space-around' }}>
         <Button onPress={onPlayPress}>

@@ -4,7 +4,7 @@ import Animated, { Easing, Extrapolate, interpolate, useAnimatedStyle, useShared
 import Svg, { Circle } from 'react-native-svg';
 
 interface ButtonProps {
-  // onPress: () => void,
+  animationEnd: () => void,
   buttonType?: "success" | "error"
 }
 
@@ -17,7 +17,7 @@ const marginX2 = (width * .8) - (initialDimensions / 2)
 const bottom = (height * .2) - (initialDimensions / 2)
 const top = (height * .8) - (initialDimensions / 2)
 
-const TurnEndButton = ({ buttonType = "success" }: ButtonProps) => {
+const TurnEndButton = ({ animationEnd, buttonType = "success" }: ButtonProps) => {
   const backgroundColor = buttonType === 'success' ? '#5BBA6F' : '#F95738'
   const right = buttonType === 'success' ? marginX1 : marginX2
   const left = buttonType === 'success' ? marginX2 : marginX1
@@ -25,23 +25,16 @@ const TurnEndButton = ({ buttonType = "success" }: ButtonProps) => {
   const shared = useSharedValue(top)
 
   const onButtonPress = () => {
-    if (zIndex === 1) {
-      setZIndex(999)
-      shared.value = withTiming(
-        0,
-        {
-          duration: 100,
-        },
-      )
-    } else {
-      setZIndex(1)
-      shared.value = withTiming(
-        top,
-        {
-          duration: 100,
-        },
-      )
-    }
+    setZIndex(999)
+    shared.value = withTiming(
+      0,
+      {
+        duration: 100,
+      },
+    )
+    setTimeout(() => {
+      animationEnd()
+    }, 500);
   }
 
   const buttonAnimation = useAnimatedStyle(() => ({
