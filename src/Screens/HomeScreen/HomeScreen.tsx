@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, StyleSheet, Image } from 'react-native';
+import React, { useEffect } from 'react'
+import { View, StyleSheet, Image, PermissionsAndroid } from 'react-native';
 import { Button } from '../../Components';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 
@@ -26,6 +26,10 @@ const HomeScreen = ({ navigation }: StackNavigationProps<AppRoutes, 'HomeScreen'
   const onHowToPress = () => {
     navigation.navigate('HowToScreen')
   }
+
+  useEffect(() => {
+    PermissionsAndroid.request('android.permission.RECORD_AUDIO')
+  }, [])
 
   return (
     <View style={styles.container}>

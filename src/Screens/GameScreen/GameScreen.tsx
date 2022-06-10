@@ -6,7 +6,6 @@ import {
   View,
 } from 'react-native';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
-import { useTheme } from '@react-navigation/native';
 import { TurnActive, TurnStart } from '.';
 import AudioRecord from 'react-native-audio-record';
 import TurnEnd from './TurnEnd';
@@ -14,7 +13,6 @@ import TurnEnd from './TurnEnd';
 const { ReverseAudioModule } = NativeModules;
 
 const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) => {
-  const { colors } = useTheme();
   const [screenState, setScreenState] = useState('start')
   const [audioFilePath, setAudioFilePath] = useState('')
   const gameSettings = route.params.gameSettings
@@ -41,17 +39,19 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
       audioSource: 6,
       wavFile: 'flipTheScript.wav'
     }
-    // AudioRecord.init(options);
-    // AudioRecord.start();
+    AudioRecord.init(options);
+    AudioRecord.start();
   }
 
-  const onFinishRecord = (screen: string) => {
+  const onFinishRecord = async (screen: string) => {
+    const audioFile = await AudioRecord.stop();
+    setAudioFilePath(audioFile)
     setScreenState(screen)
-    // AudioRecord.stop()
   }
 
   const onPlayRecording = async () => {
-    // ReverseAudioModule.reverseAudioRecordingEvent(audioFilePath);
+    const audioFile = await AudioRecord.stop();
+    ReverseAudioModule.reverseAudioRecordingEvent(audioFilePath);
   }
 
   const onScore = () => {
