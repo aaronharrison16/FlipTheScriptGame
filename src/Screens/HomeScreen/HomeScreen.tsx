@@ -6,9 +6,11 @@ import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 const teamList = [
   {
     teamName: 'Team 1',
+    score: 0
   },
   {
     teamName: 'Team 2',
+    score: 0
   },
 ];
 

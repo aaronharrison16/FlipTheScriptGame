@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  StatusBar,
   NativeModules,
   View,
 } from 'react-native';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import { TurnActive, TurnStart } from '.';
 import AudioRecord from 'react-native-audio-record';
-import TurnEnd from './TurnEnd';
 
 const { ReverseAudioModule } = NativeModules;
 
@@ -43,10 +41,9 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     AudioRecord.start();
   }
 
-  const onFinishRecord = async (screen: string) => {
+  const onFinishRecord = async () => {
     const audioFile = await AudioRecord.stop();
     setAudioFilePath(audioFile)
-    setScreenState(screen)
   }
 
   const onPlayRecording = async () => {
@@ -56,6 +53,7 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
 
   const onScore = () => {
     teamList[activeTeamIndex].score += 1
+    console.log(teamList[activeTeamIndex])
     endTurn()
   }
 
@@ -65,6 +63,9 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
 
   const endTurn = () => {
     const activeTeam = teamList[activeTeamIndex]
+
+    console.log(teamList)
+
     if (activeTeam.score === gameSettings.scoreLimit) {
       console.log("winner winner chicken dinner")
       return
@@ -82,30 +83,23 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
   }
 
   return (
-    <>
-      <StatusBar backgroundColor={teamList[activeTeamIndex].teamColor} barStyle="dark-content" />
-      <View style={{flex: 1, backgroundColor: 'steelblue' }}>
-        <TurnStart
-          team={teamList[activeTeamIndex]}
-          setScreenState={setScreenState}
-          screenState={screenState}
+    <View style={{flex: 1, backgroundColor: 'steelblue' }}>
+      <TurnStart
+        team={teamList[activeTeamIndex]}
+        setScreenState={setScreenState}
+        screenState={screenState}
+      />
+      {screenState === 'active' &&
+        <TurnActive
+          word={turnWord}
+          onRecord={onStartRecording}
+          onStopRecord={onFinishRecord}
+          onPlayRecord={onPlayRecording}
+          onRightAnswer={onScore}
+          onWrongAnswer={onNoScore}
         />
-        {screenState === 'active' &&
-          <TurnActive
-            word={turnWord}
-            onRecord={onStartRecording}
-            onStopRecord={onFinishRecord}
-          />
-        }
-        {screenState === 'end' &&
-          <TurnEnd
-            onPlayRecording={onPlayRecording}
-            onRightAnswer={onScore}
-            onWrongAnswer={onNoScore}
-          />
-        }
-      </View>
-    </>
+      }
+    </View>
   );
 }
 
