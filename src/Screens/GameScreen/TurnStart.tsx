@@ -6,14 +6,14 @@ import { Team } from '../GameSettingsScreen'
 
 interface TurnStartProps {
   team: Team,
-  setScreenState: (screen: string) => void,
-  screenState: string
+  setScreenStep: () => void,
+  screenStep: number
 }
 
 const endMarginTop = 10
 const startMarginTop = Dimensions.get('window').height / 3
 
-const TurnStart = ({ team, screenState, setScreenState }: TurnStartProps) => {
+const TurnStart = ({ team, screenStep, setScreenStep }: TurnStartProps) => {
   const shared = useSharedValue(startMarginTop)
 
   const onStartPress = () => {
@@ -23,7 +23,7 @@ const TurnStart = ({ team, screenState, setScreenState }: TurnStartProps) => {
         stiffness: 90
       },
     )
-    setScreenState('active')
+    setScreenStep()
   }
 
   const nameContainerAnimation = useAnimatedStyle(() => ({
@@ -52,7 +52,7 @@ const TurnStart = ({ team, screenState, setScreenState }: TurnStartProps) => {
         </Animated.Text>
       </Animated.View>
 
-      {screenState === 'start' && 
+      {screenStep === 1 && 
         <Animated.View style={[{position: 'absolute', top: startMarginTop + 150}, passTextAnimation]}>
           <Button onPress={onStartPress}>Start Turn</Button>
         </Animated.View>

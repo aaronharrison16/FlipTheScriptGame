@@ -5,10 +5,20 @@ import Svg, { Circle } from 'react-native-svg';
 import { Button } from './Button';
 
 interface ButtonProps {
-  animationEnd: () => void,
   onScore: (buttonType: string) => void,
+  animationEnd: () => void,
   buttonType?: "success" | "error",
 }
+
+const successMessages = [
+  "Way to go!",
+  "You did it!"
+]
+
+const errorMessages = [
+  "You Suck!",
+  "Better luck next time"
+]
 
 const { height, width } = Dimensions.get('window')
 const initialDimensions = 82
@@ -20,7 +30,7 @@ const marginX2 = (width * .8) - (initialDimensions / 2)
 const bottom = (height * .2) - (initialDimensions / 2)
 const top = (height * .8) - (initialDimensions / 2)
 
-const TurnEndButton = ({ animationEnd, onScore, buttonType = "success" }: ButtonProps) => {
+const TurnEndButton = ({ onScore, buttonType = "success", animationEnd }: ButtonProps) => {
   const backgroundColor = buttonType === 'success' ? '#5BBA6F' : '#F95738'
   const right = buttonType === 'success' ? marginX1 : marginX2
   const left = buttonType === 'success' ? marginX2 : marginX1
@@ -62,6 +72,17 @@ const TurnEndButton = ({ animationEnd, onScore, buttonType = "success" }: Button
         duration: 250,
       },
     )
+    setTimeout(() => {
+      animationEnd()
+    }, 250);
+  }
+
+  const getMessage = () => {
+    if (buttonType === 'success') {
+      return successMessages[Math.floor(Math.random()*successMessages.length)]
+    }
+
+    return errorMessages[Math.floor(Math.random()*errorMessages.length)]
   }
 
   const buttonAnimation = useAnimatedStyle(() => ({
@@ -76,8 +97,12 @@ const TurnEndButton = ({ animationEnd, onScore, buttonType = "success" }: Button
     <TouchableWithoutFeedback onPress={onButtonPress}>
       <Animated.View style={[{ backgroundColor, position: 'absolute', zIndex, justifyContent: 'center', alignItems: 'center' }, buttonAnimation]}>
         {
+          
           shared.value >= 1 && (
-            <Button onPress={onDismiss}>Dismiss</Button>
+            <>
+              <Text>{getMessage()}</Text>
+              <Button onPress={onDismiss}>Dismiss</Button>
+            </>
           )
         }
       </Animated.View>

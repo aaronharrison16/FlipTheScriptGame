@@ -3,21 +3,25 @@ import {
   StyleSheet,
   NativeModules,
   View,
+  Text,
 } from 'react-native';
 import { AppRoutes, StackNavigationProps } from '../../Navigation/Navigation';
 import { TurnActive, TurnStart } from '.';
 import AudioRecord from 'react-native-audio-record';
+import { TurnEndButton } from '../../Components';
 
 const { ReverseAudioModule } = NativeModules;
 
 const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) => {
   const [screenState, setScreenState] = useState('start')
+  const [screenStep, setScreenStep] = useState(1)
   const [audioFilePath, setAudioFilePath] = useState('')
   const gameSettings = route.params.gameSettings
   const teamList = gameSettings.teamList
   const [wordLibrary, setWordLibrary] = useState([...gameSettings.gameMode.gameModeList])
   const [turnWord, setTurnWord] = useState("")
   const [activeTeamIndex, setActiveTeamIndex] = useState(Math.floor(Math.random()*teamList.length))
+  const [scoreType, setScoreType] = useState("")
   
   useEffect(() => {
     onChangeWord()
@@ -43,7 +47,8 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
 
   const onFinishRecord = async () => {
     const audioFile = await AudioRecord.stop();
-    setAudioFilePath(audioFile)
+    setAudioFilePath(audioFile);
+    setScreenStep(3)
   }
 
   const onPlayRecording = async () => {
@@ -51,17 +56,19 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     ReverseAudioModule.reverseAudioRecordingEvent(audioFilePath);
   }
 
-  const onScore = () => {
+  const onScore = (score: string) => {
     teamList[activeTeamIndex].score += 1
-    console.log(teamList[activeTeamIndex])
-    endTurn()
+    endTurn(score)
   }
 
-  const onNoScore = () => {
-    endTurn()
+  const turnReset = () => {
+    setScreenStep(1)
+    setScoreType("")
   }
 
-  const endTurn = () => {
+  const endTurn = (score: string) => {
+    setScreenStep(4)
+    setScoreType(score)
     const activeTeam = teamList[activeTeamIndex]
 
     console.log(teamList)
@@ -79,26 +86,53 @@ const GameScreen = ({ route }: StackNavigationProps<AppRoutes, 'GameScreen'>) =>
     
     setActiveTeamIndex(newIndex)
     onChangeWord()
-    setScreenState('active')
   }
 
   return (
     <View style={{flex: 1, backgroundColor: 'steelblue' }}>
-      <TurnStart
-        team={teamList[activeTeamIndex]}
-        setScreenState={setScreenState}
-        screenState={screenState}
-      />
-      {screenState === 'active' &&
+      <View style={{ backgroundColor: '#5BBA6F', padding: 16 }}>
+        <Text style={{ paddingBottom: 16}}>Game to {gameSettings.scoreLimit}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+          { teamList.map(team => (
+            <View style={{ alignItems: 'center' }}>
+              <Text>{team.teamName}</Text>
+              <Text>{team.score}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {(screenStep < 4) && (
+        <TurnStart
+          team={teamList[activeTeamIndex]}
+          setScreenStep={() => setScreenStep(2)}
+          screenStep={screenStep}
+        />
+      )}
+
+      {(screenStep >= 2 && screenStep < 4) &&
         <TurnActive
           word={turnWord}
           onRecord={onStartRecording}
           onStopRecord={onFinishRecord}
           onPlayRecord={onPlayRecording}
-          onRightAnswer={onScore}
-          onWrongAnswer={onNoScore}
         />
       }
+
+      {(screenStep >= 3 && scoreType !== 'error') && (
+        <TurnEndButton
+          onScore={onScore}
+          animationEnd={turnReset}
+        />
+      )}
+
+      {(screenStep >= 3 && scoreType !== 'success') && (
+        <TurnEndButton
+          buttonType='error'
+          animationEnd={turnReset}
+          onScore={endTurn}
+        />
+      )}
     </View>
   );
 }
